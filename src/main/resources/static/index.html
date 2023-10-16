@@ -9,5 +9,14 @@
 </head>
 <body>
 Hello world!
+<button onclick="logout()">로그아웃</button>
 </body>
+<script>
+    const logout = () => {
+        fetch("http://localhost:8080/auth/logout")
+            .then(res => res.json())
+
+        location.href = 'http://localhost:8080/auth/login';
+    }
+</script>
 </html>
