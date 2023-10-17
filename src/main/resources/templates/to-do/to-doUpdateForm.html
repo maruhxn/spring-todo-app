@@ -1,0 +1,41 @@
+<!doctype html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Todo Update</title>
+</head>
+<body>
+<h1>수정</h1>
+<form th:action="@{/todos/{todoId}(todoId=${todo.todoId})}" th:object="${todo}" th:method="put">
+    <div th:if="${#fields.hasGlobalErrors()}">
+        <p th:each="err : ${#fields.globalErrors()}" th:text="${err}">전체 오류 메시지</p>
+    </div>
+
+    <div>
+        <label for="content">내용</label>
+        <input type="text" placeholder="내용 입력" th:field="*{content}">
+        <p th:errors="*{content}"/>
+    </div>
+
+    <div>상태</div>
+    <div th:each="status : ${statusList}">
+        <input type="radio" th:field="*{status}" th:value="${status.name()}">
+        <label th:for="${#ids.prev('status')}" th:text="${status.description}">
+            ISSUE
+        </label>
+    </div>
+
+    <div>
+        <button type="submit">수정</button>
+        <button
+                onclick="location.href='to-doList.html'"
+                th:onclick="|location.href='@{/todos}'|"
+                type="button">취소
+        </button>
+    </div>
+</form>
+</body>
+</html>

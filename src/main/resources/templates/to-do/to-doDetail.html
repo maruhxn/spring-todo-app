@@ -1,0 +1,30 @@
+<!doctype html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Todo Detail</title>
+</head>
+<body th:object="${todo}">
+<h1 th:text="*{content}">내용</h1>
+<hr>
+<p th:text="*{status.description}">상태</p>
+<hr>
+<p th:text="*{createdAt}">생성 시각</p>
+<hr>
+<div>
+    <button
+            onclick="location.href='to-doList.html'"
+            th:onclick="|location.href='@{/todos/{todoId}/edit(todoId=${todo.todoId})}'|"
+            type="button">수정
+    </button>
+    <button
+            onclick="location.href='to-doList.html'"
+            th:onclick="|location.href='@{/todos}'|"
+            type="button">할 일 목록
+    </button>
+</div>
+</body>
+</html>

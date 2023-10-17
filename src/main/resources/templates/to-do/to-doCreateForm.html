@@ -1,0 +1,32 @@
+<!doctype html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Todo Create</title>
+</head>
+<body>
+<form th:action="@{/todos}" th:object="${dto}" method="post">
+    <div th:if="${#fields.hasGlobalErrors()}">
+        <p th:each="err : ${#fields.globalErrors()}" th:text="${err}">전체 오류 메시지</p>
+    </div>
+
+    <div>
+        <label for="content">내용</label>
+        <input type="text" placeholder="내용 입력" th:field="*{content}">
+        <p th:errors="*{content}"/>
+    </div>
+
+    <div>
+        <button type="submit">등록</button>
+        <button
+                onclick="location.href='to-doList.html'"
+                th:onclick="|location.href='@{/todos}'|"
+                type="button">취소
+        </button>
+    </div>
+</form>
+</body>
+</html>

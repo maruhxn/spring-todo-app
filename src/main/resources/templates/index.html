@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="ko">
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport"
@@ -8,8 +8,18 @@
     <title>TODO</title>
 </head>
 <body>
-Hello world!
-<button onclick="logout()">로그아웃</button>
+<h1>Todo App</h1>
+
+<hr>
+<div th:if="${member} == null">
+    <a href="http://localhost:8080/auth/login">로그인</a>
+    <a href="http://localhost:8080/auth/register">회원가입</a>
+</div>
+<div th:if="${member} != null">
+    <h4 th:text="|안녕하세요, ${member.username}|">안녕하세요, 익명님</h4>
+    <a href="/todos">할 일 관리</a>
+    <button onclick="logout()">로그아웃</button>
+</div>
 </body>
 <script>
     const logout = () => {

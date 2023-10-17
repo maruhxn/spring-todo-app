@@ -1,0 +1,53 @@
+<!doctype html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Todo List</title>
+</head>
+<body>
+<h1>Todo List</h1>
+<div>
+    <h2 th:text="${statusList[0].description}">할 일</h2>
+    <ul>
+        <li th:each="todo: ${todos}"
+            th:if="${#strings.equals(todo.status,statusList[0].name())}">
+            <a th:text="${todo.content}" th:href="@{/todos/{todoId}(todoId=${todo.todoId})}">항목</a>
+            <form th:action="@{/todos/{todoId}(todoId=${todo.todoId})}" th:method="delete">
+                <button type="submit">❌</button>
+            </form>
+        </li>
+
+    </ul>
+
+    <h2 th:text="${statusList[1].description}">진행 중</h2>
+    <ul>
+        <li th:each="todo: ${todos}"
+            th:if="${#strings.equals(todo.status,statusList[1].name())}">
+            <a th:text="${todo.content}"
+               th:href="@{/todos/{todoId}(todoId=${todo.todoId})}">항목</a>
+            <form th:action="@{/todos/{todoId}(todoId=${todo.todoId})}" th:method="delete">
+                <button type="submit">❌</button>
+            </form>
+        </li>
+
+    </ul>
+
+    <h2 th:text="${statusList[2].description}">진행 중</h2>
+    <ul>
+        <li th:each="todo: ${todos}"
+            th:if="${#strings.equals(todo.status,statusList[2].name())}">
+            <a th:text="${todo.content}"
+               th:href="@{/todos/{todoId}(todoId=${todo.todoId})}">항목</a>
+            <form th:action="@{/todos/{todoId}(todoId=${todo.todoId})}" th:method="delete">
+                <button type="submit">❌</button>
+            </form>
+        </li>
+    </ul>
+</div>
+<hr>
+<a href="/todos/create">할 일 추가</a>
+</body>
+</html>
