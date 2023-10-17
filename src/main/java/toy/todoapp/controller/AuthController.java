@@ -8,6 +8,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
+import toy.todoapp.config.SessionConst;
 import toy.todoapp.domain.Member;
 import toy.todoapp.service.AuthService;
 import toy.todoapp.service.LoginDto;
@@ -49,8 +50,8 @@ public class AuthController {
 
     @PostMapping("/login")
     public String login(@Valid @ModelAttribute LoginDto dto, BindingResult bindingResult,
-                         @RequestParam(defaultValue = "/") String redirectURL,
-                         HttpServletRequest req
+                        @RequestParam(defaultValue = "/") String redirectURL,
+                        HttpServletRequest req
     ) {
         log.info("loginDto={}", dto);
         if (bindingResult.hasErrors()) {
@@ -65,9 +66,9 @@ public class AuthController {
         }
 
         HttpSession session = req.getSession();
-        session.setAttribute("loginMember", loginMember); // 비밀번호는 빼는게 좋지 않나..?
+        session.setAttribute(SessionConst.LOGIN_MEMBER, loginMember); // 비밀번호는 빼는게 좋지 않나..?
 
-        return "redirect:/";
+        return "redirect:" + redirectURL;
     }
 
     @GetMapping("/logout")

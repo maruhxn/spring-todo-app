@@ -8,6 +8,7 @@
     <title>Todo Create</title>
 </head>
 <body>
+<h1>할 일 추가</h1>
 <form th:action="@{/todos}" th:object="${dto}" method="post">
     <div th:if="${#fields.hasGlobalErrors()}">
         <p th:each="err : ${#fields.globalErrors()}" th:text="${err}">전체 오류 메시지</p>

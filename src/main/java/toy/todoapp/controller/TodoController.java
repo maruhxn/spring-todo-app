@@ -7,6 +7,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
+import toy.todoapp.config.SessionConst;
 import toy.todoapp.domain.Member;
 import toy.todoapp.domain.Todo;
 import toy.todoapp.domain.TodoStatus;
@@ -45,7 +46,7 @@ public class TodoController {
     @PostMapping("")
     public String createTodo(@Valid @ModelAttribute CreateTodoDto dto,
                              BindingResult bindingResult,
-                             @SessionAttribute(name = "loginMember", required = false) Member loginMember
+                             @SessionAttribute(name = SessionConst.LOGIN_MEMBER, required = false) Member loginMember
     ) {
         if (bindingResult.hasErrors()) {
             return "to-do/to-doList";
