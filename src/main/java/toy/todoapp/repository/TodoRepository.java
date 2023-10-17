@@ -10,7 +10,7 @@ public interface TodoRepository {
 
     Optional<Todo> findById(Long id);
 
-    List<Todo> findAll();
+    List<Todo> findAll(Long memberId);
 
     void update(Long todoId, TodoUpdateDto updateDto);
 

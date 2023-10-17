@@ -23,8 +23,8 @@ public class TodoService {
         return todoRepository.findById(todoId);
     }
 
-    public List<Todo> findTodos() {
-        return todoRepository.findAll();
+    public List<Todo> findTodos(Long memberId) {
+        return todoRepository.findAll(memberId);
     }
 
     public void updateTodo(Long todoId, TodoUpdateDto updateDto) {

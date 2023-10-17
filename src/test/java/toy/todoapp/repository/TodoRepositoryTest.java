@@ -45,15 +45,16 @@ class TodoRepositoryTest {
     void findAll() {
         // Given
         Todo todo1 = Todo.createTodo(1L, "test");
-        Todo todo2 = Todo.createTodo(1L, "test2");
+        Todo todo2 = Todo.createTodo(2L, "test2");
 
         todoRepository.save(todo1);
         todoRepository.save(todo2);
         // When
-        List<Todo> todos = todoRepository.findAll();
+        List<Todo> todos = todoRepository.findAll(1L);
 
         // Then
-        assertThat(todos).containsExactly(new Todo[]{todo1, todo2});
+        assertThat(todos).containsExactly(new Todo[]{todo1});
+        assertThat(todos).doesNotContain(todo2);
     }
 
     @Test

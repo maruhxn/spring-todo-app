@@ -3,10 +3,8 @@ package toy.todoapp.repository;
 import org.springframework.stereotype.Repository;
 import toy.todoapp.domain.Todo;
 
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
+import java.util.*;
+import java.util.stream.Collectors;
 
 @Repository
 public class MemoryTodoRepository implements TodoRepository {
@@ -27,8 +25,10 @@ public class MemoryTodoRepository implements TodoRepository {
     }
 
     @Override
-    public List<Todo> findAll() {
-        return todoStore.values().stream().toList();
+    public List<Todo> findAll(Long memberId) {
+        return todoStore.values().stream().
+                filter(todo -> Objects.equals(todo.getMemberId(), memberId))
+                .collect(Collectors.toList());
     }
 
     @Override

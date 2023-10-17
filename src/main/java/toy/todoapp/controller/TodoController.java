@@ -1,5 +1,7 @@
 package toy.todoapp.controller;
 
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpSession;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -32,8 +34,10 @@ public class TodoController {
     }
 
     @GetMapping("")
-    public String todoListView(Model model) {
-        List<Todo> todos = todoService.findTodos();
+    public String todoListView(Model model, HttpServletRequest req) {
+        HttpSession session = req.getSession();
+        Member loginMember = (Member) session.getAttribute(SessionConst.LOGIN_MEMBER);
+        List<Todo> todos = todoService.findTodos(loginMember.getMemberId());
         model.addAttribute("todos", todos);
         return "to-do/to-doList";
     }

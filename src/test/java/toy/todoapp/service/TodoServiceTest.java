@@ -56,7 +56,7 @@ class TodoServiceTest {
         Todo todo1 = todoService.createTodo(dto1);
         Todo todo2 = todoService.createTodo(dto2);
         // When
-        List<Todo> todos = todoService.findTodos();
+        List<Todo> todos = todoService.findTodos(1L);
 
         // Then
         assertThat(todos).containsExactly(new Todo[]{todo1, todo2});
@@ -82,7 +82,7 @@ class TodoServiceTest {
     @Test
     void deleteTodo() {
         // Given
-        List<Todo> todos = todoService.findTodos();
+        List<Todo> todos = todoService.findTodos(1L);
         CreateTodoDto dto = new CreateTodoDto(1L, "test");
 
         Todo savedTodo = todoService.createTodo(dto);
