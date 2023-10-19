@@ -1,13 +1,14 @@
 package toy.todoapp.service;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
 import toy.todoapp.domain.Todo;
 import toy.todoapp.repository.TodoRepository;
 import toy.todoapp.repository.TodoUpdateDto;
 
 import java.util.List;
-import java.util.Optional;
+import java.util.NoSuchElementException;
 
 @Service
 @RequiredArgsConstructor
@@ -16,11 +17,16 @@ public class TodoService {
 
     public Todo createTodo(CreateTodoDto dto) {
         Todo todo = Todo.createTodo(dto.getMemberId(), dto.getContent());
-        return todoRepository.save(todo);
+        try {
+            todoRepository.save(todo);
+            return todo;
+        } catch (DataIntegrityViolationException e) {
+            throw new IllegalArgumentException("잘못된 유저 정보입니다.");
+        }
     }
 
-    public Optional<Todo> findOne(Long todoId) {
-        return todoRepository.findById(todoId);
+    public Todo findOne(Long todoId) {
+        return todoRepository.findById(todoId).orElseThrow(() -> new NoSuchElementException("해당 TODO는 존재하지 않습니다."));
     }
 
     public List<Todo> findTodos(Long memberId) {
@@ -28,10 +34,16 @@ public class TodoService {
     }
 
     public void updateTodo(Long todoId, TodoUpdateDto updateDto) {
-        todoRepository.update(todoId, updateDto);
+        int rowCnt = todoRepository.update(todoId, updateDto);
+        if (rowCnt == 0) {
+            throw new NoSuchElementException("해당 TODO는 존재하지 않습니다.");
+        }
     }
 
     public void deleteTodo(Long todoId) {
-        todoRepository.deleteById(todoId);
+        int rowCnt = todoRepository.deleteById(todoId);
+        if (rowCnt == 0) {
+            throw new NoSuchElementException("해당 TODO는 존재하지 않습니다.");
+        }
     }
 }

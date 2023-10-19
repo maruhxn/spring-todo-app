@@ -31,6 +31,12 @@ public class MemoryMemberRepository implements MemberRepository {
                 .findFirst();
     }
 
+    @Override
+    public int deleteById(Long memberId) {
+        memberStore.remove(memberId);
+        return 1;
+    }
+
     public void clearStore() {
         memberStore.clear();
     }

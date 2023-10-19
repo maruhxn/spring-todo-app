@@ -63,7 +63,7 @@ public class JdbcTemplateTodoRepository implements TodoRepository {
     }
 
     @Override
-    public void update(Long todoId, TodoUpdateDto updateDto) {
+    public int update(Long todoId, TodoUpdateDto updateDto) {
         String sql = "update todo " +
                 "set content=:content, status=:status " +
                 "where todo_id=:todoId";
@@ -72,15 +72,16 @@ public class JdbcTemplateTodoRepository implements TodoRepository {
                 .addValue("status", updateDto.getStatus().toString())
                 .addValue("todoId", todoId);
 
-        template.update(sql, param);
+        int updatedRowCnt = template.update(sql, param);
+        return updatedRowCnt;
 
     }
 
     @Override
-    public void deleteById(Long todoId) {
+    public int deleteById(Long todoId) {
         String sql = "delete from todo where todo_id = :todoId";
         Map<String, Object> param = Map.of("todoId", todoId);
-        template.update(sql, param);
+        return template.update(sql, param);
     }
 
     private RowMapper<Todo> todoRowMapper() {

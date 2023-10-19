@@ -31,15 +31,17 @@ public class MemoryTodoRepository implements TodoRepository {
     }
 
     @Override
-    public void update(Long todoId, TodoUpdateDto updateDto) {
+    public int update(Long todoId, TodoUpdateDto updateDto) {
         Todo findTodo = findById(todoId).orElseThrow();
         findTodo.setContent(updateDto.getContent());
         findTodo.setStatus(updateDto.getStatus());
+        return 1;
     }
 
     @Override
-    public void deleteById(Long todoId) {
+    public int deleteById(Long todoId) {
         todoStore.remove(todoId);
+        return 1;
     }
 
     public void clearStore() {

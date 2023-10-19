@@ -70,6 +70,13 @@ public class JdbcTepmlateMemberRepository implements MemberRepository {
         }
     }
 
+    @Override
+    public int deleteById(Long memberid) {
+        String sql = "delete from member where member_id = :memberid";
+        Map<String, Object> param = Map.of("memberid", memberid);
+        return template.update(sql, param);
+    }
+
     private RowMapper<Member> memberRowMapper() {
         return BeanPropertyRowMapper.newInstance(Member.class);
     }

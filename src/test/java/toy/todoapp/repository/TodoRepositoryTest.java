@@ -4,6 +4,7 @@ import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.transaction.annotation.Transactional;
 import toy.todoapp.domain.Member;
 import toy.todoapp.domain.Todo;
@@ -50,6 +51,19 @@ class TodoRepositoryTest {
     }
 
     @Test
+    void saveFailWithNoMember() {
+        // Given
+        Member member = memberRepository.save(memberA);
+        Todo todo = Todo.createTodo(999L, "test");
+
+        // When
+
+        // Then
+        assertThatThrownBy(() -> todoRepository.save(todo))
+                .isInstanceOf(DataIntegrityViolationException.class);
+    }
+
+    @Test
     void findAll() {
         // Given
         Member member1 = memberRepository.save(memberA);
@@ -82,6 +96,16 @@ class TodoRepositoryTest {
         Todo findTodo = todoRepository.findById(todo.getTodoId()).get();
         assertThat(findTodo.getContent()).isEqualTo(todoUpdateDto.getContent());
         assertThat(findTodo.getStatus()).isEqualTo(todoUpdateDto.getStatus());
+    }
+
+    @Test
+    void updateFailWithNoTodo() {
+        // Given
+        TodoUpdateDto todoUpdateDto = new TodoUpdateDto("update!", TodoStatus.COMPLETED);
+        // When
+        todoRepository.update(999L, todoUpdateDto);
+
+        // Then
     }
 
     @Test

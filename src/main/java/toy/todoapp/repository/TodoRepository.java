@@ -12,7 +12,7 @@ public interface TodoRepository {
 
     List<Todo> findAll(Long memberId);
 
-    void update(Long todoId, TodoUpdateDto updateDto);
+    int update(Long todoId, TodoUpdateDto updateDto);
 
-    void deleteById(Long todoId);
+    int deleteById(Long todoId);
 }

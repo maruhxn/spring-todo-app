@@ -29,7 +29,6 @@ public class AuthController {
 
     @PostMapping("/register")
     public String register(@Valid @ModelAttribute RegisterDto dto, BindingResult bindingResult,
-                           @RequestParam(defaultValue = "/") String redirectURL,
                            HttpServletRequest req
     ) {
         if (bindingResult.hasErrors()) {
@@ -73,10 +72,8 @@ public class AuthController {
 
     @GetMapping("/logout")
     public String logout(HttpServletRequest req) {
-        log.info("로그아웃 시도");
         HttpSession session = req.getSession(false);
         if (session != null) {
-            log.info("logout!");
             session.invalidate();
         }
         return "redirect:/login";

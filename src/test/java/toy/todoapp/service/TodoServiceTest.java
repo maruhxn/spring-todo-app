@@ -51,7 +51,7 @@ class TodoServiceTest {
         Todo savedTodo = todoService.createTodo(dto);
 
         // Then
-        Todo findTodo = todoService.findOne(savedTodo.getTodoId()).get();
+        Todo findTodo = todoService.findOne(savedTodo.getTodoId());
         assertThat(savedTodo.getTodoId()).isEqualTo(findTodo.getTodoId());
     }
 
@@ -62,8 +62,8 @@ class TodoServiceTest {
         CreateTodoDto dto1 = new CreateTodoDto(member.getMemberId(), "test");
         CreateTodoDto dto2 = new CreateTodoDto(member.getMemberId(), "test2");
 
-        Todo todo1 = todoService.createTodo(dto1);
-        Todo todo2 = todoService.createTodo(dto2);
+        todoService.createTodo(dto1);
+        todoService.createTodo(dto2);
         // When
         List<Todo> todos = todoService.findTodos(member.getMemberId());
 
@@ -84,16 +84,32 @@ class TodoServiceTest {
         todoService.updateTodo(savedTodo.getTodoId(), todoUpdateDto);
 
         // Then
-        Todo findTodo = todoService.findOne(savedTodo.getTodoId()).get();
+        Todo findTodo = todoService.findOne(savedTodo.getTodoId());
         assertThat(findTodo.getContent()).isEqualTo(todoUpdateDto.getContent());
         assertThat(findTodo.getStatus()).isEqualTo(todoUpdateDto.getStatus());
+    }
+
+    @Test
+    void updateFailWithNoTodo() {
+        // Given
+        Member member = memberRepository.save(memberA);
+        CreateTodoDto dto = new CreateTodoDto(member.getMemberId(), "test");
+
+        Todo savedTodo = todoService.createTodo(dto);
+
+        TodoUpdateDto todoUpdateDto = new TodoUpdateDto("update!", TodoStatus.COMPLETED);
+        // When
+
+
+        // Then
+        assertThatThrownBy(() -> todoService.updateTodo(999L, todoUpdateDto))
+                .isInstanceOf(NoSuchElementException.class);
     }
 
     @Test
     void deleteTodo() {
         // Given
         Member member = memberRepository.save(memberA);
-        List<Todo> todos = todoService.findTodos(member.getMemberId());
         CreateTodoDto dto = new CreateTodoDto(member.getMemberId(), "test");
 
         Todo savedTodo = todoService.createTodo(dto);
@@ -101,7 +117,21 @@ class TodoServiceTest {
         todoService.deleteTodo(savedTodo.getTodoId());
 
         // Then
-        assertThatThrownBy(() -> todoService.findOne(savedTodo.getTodoId()).get())
+        assertThatThrownBy(() -> todoService.findOne(savedTodo.getTodoId()))
+                .isInstanceOf(NoSuchElementException.class);
+    }
+
+    @Test
+    void deleteFailWithNoTodo() {
+        // Given
+        Member member = memberRepository.save(memberA);
+        CreateTodoDto dto = new CreateTodoDto(member.getMemberId(), "test");
+
+        todoService.createTodo(dto);
+        // When
+
+        // Then
+        assertThatThrownBy(() -> todoService.deleteTodo(999L))
                 .isInstanceOf(NoSuchElementException.class);
     }
 }

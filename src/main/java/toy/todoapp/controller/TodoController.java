@@ -67,7 +67,7 @@ public class TodoController {
 
     @GetMapping("/{todoId}")
     public String todoDetailView(@PathVariable Long todoId, Model model) {
-        Todo todo = todoService.findOne(todoId).get();
+        Todo todo = todoService.findOne(todoId);
         model.addAttribute("todo", todo);
         return "to-do/to-doDetail";
     }
@@ -96,7 +96,7 @@ public class TodoController {
 
     @GetMapping("/{todoId}/edit")
     public String updateTodoView(@PathVariable Long todoId, Model model) {
-        Todo todo = todoService.findOne(todoId).get();
+        Todo todo = todoService.findOne(todoId);
         model.addAttribute("todo", todo);
         return "to-do/to-doUpdateForm";
     }
