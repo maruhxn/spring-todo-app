@@ -18,7 +18,7 @@ public class Todo {
         todo.setMemberId(memberId);
         todo.setContent(content);
         todo.setStatus(TodoStatus.ISSUE);
-        todo.setCreatedAt(LocalDateTime.now());
+//        todo.setCreatedAt(LocalDateTime.now());
 
         return todo;
     }

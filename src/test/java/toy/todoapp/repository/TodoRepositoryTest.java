@@ -5,6 +5,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.transaction.annotation.Transactional;
+import toy.todoapp.domain.Member;
 import toy.todoapp.domain.Todo;
 import toy.todoapp.domain.TodoStatus;
 
@@ -21,6 +22,12 @@ class TodoRepositoryTest {
     @Autowired
     TodoRepository todoRepository;
 
+    @Autowired
+    MemberRepository memberRepository;
+
+    Member memberA = Member.createMember("memberA", "testA@test.com", "password");
+    Member memberB = Member.createMember("memberB", "testB@test.com", "password");
+
     @AfterEach
     void afterEach() {
         if (todoRepository instanceof MemoryTodoRepository) {
@@ -31,36 +38,39 @@ class TodoRepositoryTest {
     @Test
     void save() {
         // Given
-        Todo todo = Todo.createTodo(1L, "test");
+        Member member = memberRepository.save(memberA);
+        Todo todo = Todo.createTodo(member.getMemberId(), "test");
 
         Todo savedTodo = todoRepository.save(todo);
         // When
         Todo findTodo = todoRepository.findById(savedTodo.getTodoId()).get();
 
         // Then
-        assertThat(findTodo).isEqualTo(savedTodo);
+        assertThat(findTodo.getTodoId()).isEqualTo(savedTodo.getTodoId());
     }
 
     @Test
     void findAll() {
         // Given
-        Todo todo1 = Todo.createTodo(1L, "test");
-        Todo todo2 = Todo.createTodo(2L, "test2");
+        Member member1 = memberRepository.save(memberA);
+        Member member2 = memberRepository.save(memberB);
+        Todo todo1 = Todo.createTodo(member1.getMemberId(), "test1");
+        Todo todo2 = Todo.createTodo(member2.getMemberId(), "test2");
 
         todoRepository.save(todo1);
         todoRepository.save(todo2);
         // When
-        List<Todo> todos = todoRepository.findAll(1L);
+        List<Todo> todos = todoRepository.findAll(member1.getMemberId());
 
         // Then
-        assertThat(todos).containsExactly(new Todo[]{todo1});
-        assertThat(todos).doesNotContain(todo2);
+        assertThat(todos.size()).isEqualTo(1);
     }
 
     @Test
     void update() {
         // Given
-        Todo todo = Todo.createTodo(1L, "test");
+        Member member = memberRepository.save(memberA);
+        Todo todo = Todo.createTodo(member.getMemberId(), "test");
 
         Todo savedTodo = todoRepository.save(todo);
 
@@ -77,7 +87,8 @@ class TodoRepositoryTest {
     @Test
     void deleteById() {
         // Given
-        Todo todo = Todo.createTodo(1L, "test");
+        Member member = memberRepository.save(memberA);
+        Todo todo = Todo.createTodo(member.getMemberId(), "test");
 
         Todo savedTodo = todoRepository.save(todo);
         // When

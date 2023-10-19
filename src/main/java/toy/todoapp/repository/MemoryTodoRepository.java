@@ -1,12 +1,11 @@
 package toy.todoapp.repository;
 
-import org.springframework.stereotype.Repository;
 import toy.todoapp.domain.Todo;
 
 import java.util.*;
 import java.util.stream.Collectors;
 
-@Repository
+//@Repository
 public class MemoryTodoRepository implements TodoRepository {
 
     private static final Map<Long, Todo> todoStore = new HashMap<>(); //static
@@ -20,8 +19,8 @@ public class MemoryTodoRepository implements TodoRepository {
     }
 
     @Override
-    public Optional<Todo> findById(Long id) {
-        return Optional.ofNullable(todoStore.get(id));
+    public Optional<Todo> findById(Long todoId) {
+        return Optional.ofNullable(todoStore.get(todoId));
     }
 
     @Override
